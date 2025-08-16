@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./state/AuthContext.jsx";
+import { useCart } from "./state/CartContext.jsx";
+import "./App.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const { user, logout } = useAuth();
+  const { cart } = useCart();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="app-layout">
+      {/* Navbar */}
+      <header className="navbar-main">
+        <Link to="/" className="logo-main">MyShop</Link>
+        <nav className="nav-main">
+          <Link to="/" className="nav-link">Home</Link>
+          <Link to="/cart" className="nav-link">Cart ({cart.length})</Link>
+          {user ? (
+            <div className="nav-user">
+              <span className="nav-hello">Hello, {user.name}</span>
+              <Link to="/orders" className="nav-link">My Orders</Link>
+              {user.role === "admin" && (
+                <>
+                  <Link to="/admin/products" className="nav-link">Admin Products</Link>
+                  <Link to="/admin/orders" className="nav-link">Admin Orders</Link>
+                </>
+              )}
+              <button className="nav-logout" onClick={handleLogout}>Logout</button>
+            </div>
+          ) : (
+            <div className="nav-auth">
+              <Link to="/login" className="nav-link">Login</Link>
+              <Link to="/register" className="nav-link">Register</Link>
+            </div>
+          )}
+        </nav>
+      </header>
 
-export default App
+      {/* Page Content */}
+      <main className="main-content">
+        <Outlet />
+      </main>
+
+      {/* Footer */}
+      <footer className="footer-main">
+        <p>© {new Date().getFullYear()} MyShop. All rights reserved.</p>
+      </footer>
+    </div>
+  );
+}
