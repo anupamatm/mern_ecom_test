@@ -11,7 +11,8 @@ import Home from "./pages/Home.jsx";
 // import CheckoutPage from "./pages/CheckoutPage.jsx";
 // import OrdersPage from "./pages/OrdersPage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
-// import AdminLogin from "./pages/admin/AdminLogin.jsx";
+import AdminLogin from "./pages/AdminLogin.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
 // import AdminProducts from "./pages/admin/AdminProducts.jsx";
 // import AdminOrders from "./pages/admin/AdminOrders.jsx";
 import { AuthProvider, useAuth } from "./state/AuthContext.jsx";
@@ -35,9 +36,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               {/* <Route path="/orders" element={<Private><OrdersPage/></Private>} /> */}
               <Route path="/login" element={<LoginPage />} />
               {/* <Route path="/register" element={<RegisterPage />} /> */}
-              {/* <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin/products" element={<AdminOnly><AdminProducts/></AdminOnly>} />
-              <Route path="/admin/orders" element={<AdminOnly><AdminOrders/></AdminOnly>} /> */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/dashboard" element={<AdminOnly><AdminDashboard/></AdminOnly>} />
+              <Route path="/admin/products" element={<AdminOnly><div className="container"><h2>Admin Products (TODO)</h2></div></AdminOnly>} />
+              <Route path="/admin/orders" element={<AdminOnly><div className="container"><h2>Admin Orders (TODO)</h2></div></AdminOnly>} />
             </Route>
           </Routes>
         </BrowserRouter>
