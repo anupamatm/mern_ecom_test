@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import http from "../api/http";
-import { useNavigate , Link} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../state/AuthContext.jsx";
 import { API_BASE } from "../api/http";
+import { PRODUCT_CATEGORIES } from "../constants/categories";
 import ProductCard from "../components/ProductCard.jsx";
 
 import "../styles/Home.css";
@@ -57,14 +58,21 @@ export default function Home() {
             setQ(e.target.value);
           }}
         />
-        <input
-          placeholder="Category"
+        <select
           value={category}
           onChange={e => {
             setPage(1);
             setCategory(e.target.value);
           }}
-        />
+          className="category-select"
+        >
+          <option value="">All Categories</option>
+          {PRODUCT_CATEGORIES.map(cat => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
         <input
           placeholder="Min ₹"
           value={minPrice}
