@@ -103,9 +103,11 @@ export default function AdminOrdersPage() {
             className="filter-select"
           >
             <option value="all">All Status</option>
-            <option value="Pending">Pending</option>
-            <option value="Processing">Processing</option>
-            <option value="Delivered">Delivered</option>
+            <option value="pending">Pending</option>
+            <option value="paid">Paid</option>
+            <option value="shipped">Shipped</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
           </select>
         </div>
 
@@ -159,9 +161,11 @@ export default function AdminOrdersPage() {
                 onChange={(e) => updateStatus(order._id, e.target.value)}
                 className={`status-select status-${order.status.toLowerCase()}`}
               >
-                <option value="Pending">Pending</option>
-                <option value="Processing">Processing</option>
-                <option value="Delivered">Delivered</option>
+                <option value="pending">Pending</option>
+                <option value="paid">Paid</option>
+                <option value="shipped">Shipped</option>
+                <option value="delivered">Delivered</option>
+                <option value="cancelled">Cancelled</option>
               </select>
             </p>
           </div>
