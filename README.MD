@@ -1,62 +1,140 @@
 # MERN E-commerce Platform
 
-A full-stack e-commerce application built with the MERN stack (MongoDB, Express.js, React.js, Node.js).
+A full-stack e-commerce application built with the MERN stack (MongoDB, Express.js, React.js, Node.js). This platform provides a complete online shopping experience with user authentication, product management, and order processing capabilities.
 
 ## 🚀 Features
 
-- **User Authentication**
-  - User registration and login
-  - JWT-based authentication
-  - Protected routes
+### User Authentication
+- User registration and login
+- JWT-based authentication with refresh tokens
+- Protected routes and role-based access control
+- Secure password hashing with bcrypt
 
+### Product Catalog
+- Browse products with advanced filtering
+- Product search with autocomplete
+- Product categories and tags
+- Responsive product grid and list views
+
+### Shopping Experience
+- Shopping cart with local storage persistence
+- Secure checkout process
+- Order tracking and history
+- Product reviews and ratings
+
+### Admin Dashboard
 - **Product Management**
-  - Browse products with filters
-  - Product details and reviews
-  - Search functionality
+  - Add, edit, and delete products
+  - Bulk product upload
+  - Inventory management
 
-- **Shopping Experience**
-  - Shopping cart functionality
-  - Checkout process
-  - Order history
+- **Order Management**
+  - View and filter orders
+  - Update order status (Pending → Processing → Delivered)
+  - Order analytics and statistics
+  - Date-based order filtering
 
-- **Admin Dashboard**
-  - Manage products
-  - View and manage orders
-  - User management
+- **User Management**
+  - View registered users
+  - User role management
+  - Activity monitoring
+
+- **Analytics Dashboard**
+  - Sales statistics
+  - Product performance metrics
+  - Order status overview
 
 ## 🛠 Technology Stack
 
 ### Frontend
-- React.js 18
-- React Router v6
-- Redux Toolkit for state management
+- React.js 18 with Hooks
+- React Router v6 for navigation
+- Context API for state management
 - Axios for API calls
-- Tailwind CSS for styling
-- React Icons
+- Custom CSS with modern layout techniques (Flexbox/Grid)
+- React Icons for vector icons
+- Responsive design for all devices
 
 ### Backend
-- Node.js with Express.js
+- Node.js with Express.js framework
 - MongoDB with Mongoose ODM
-- JWT for authentication
+- JWT for stateless authentication
 - Bcrypt for password hashing
-- Express Validator
-- CORS and Helmet for security
-
-### Development Tools
-- Vite for frontend tooling
-- Nodemon for development
-- Postman/Insomnia for API testing
-- Git for version control
+- Express Validator for request validation
+- CORS, Helmet, and Rate Limiting for security
+- File upload handling
+- Error handling middleware
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js v18 or higher
+- Node.js (v16 or higher)
 - MongoDB (local or Atlas)
-- npm or yarn
+- Git
 
 ### Installation
 
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/anupamatm/mern_ecom_test.git
+   cd mern-ecom
+   ```
+
+2. Install dependencies for both client and server:
+   ```bash
+   # Install server dependencies
+   cd server
+   npm install
+   
+   # Install client dependencies
+   cd ../client
+   npm install
+   ```
+
+3. Set up environment variables:
+   - Create a `.env` file in the server directory
+   - Add the following variables:
+     ```
+     MONGODB_URI=your_mongodb_connection_string
+     JWT_SECRET=your_jwt_secret
+     PORT=5000
+     ```
+
+4. Start the development servers:
+   ```bash
+   # From the root directory
+   # Start backend
+   cd server
+   npm run dev
+   
+   # In a new terminal, start frontend
+   cd ../client
+   npm run dev
+   ```
+
+5. Open [http://localhost:5173](http://localhost:5173) to view the app in your browser.
+
+### Admin Access
+
+To access the admin dashboard:
+1. Visit the admin login page: [http://localhost:5173/admin/login](http://localhost:5173/admin/login)
+2. Use the following default admin credentials (make sure to change these in production):
+   - **Email**: admin@example.com
+   - **Password**: admin123
+
+> **Note**: For security reasons, it's highly recommended to change the default admin credentials after your first login.
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📧 Contact
+
+For any inquiries, please open an issue on GitHub.
 1. **Clone the repository**
    ```bash
    git clone https://github.com/your-username/mern-ecom.git

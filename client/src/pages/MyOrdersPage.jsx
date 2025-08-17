@@ -40,26 +40,44 @@ export default function MyOrdersPage() {
       <h2>My Orders</h2>
       {orders.map((order) => (
         <div key={order._id} className="order-card">
-          <h3>Order #{order._id}</h3>
-          <p><strong>Date:</strong> {new Date(order.createdAt).toLocaleString()}</p>
-          <p><strong>Total:</strong> ₹{order.total}</p>
-          <p><strong>Status:</strong> {order.status}</p> {/* Added status */}
-
+          <div className="order-card-header">
+            <h3>Order #{order._id.slice(-8).toUpperCase()}</h3>
+            <div className="order-meta">
+              <span>📅 {new Date(order.createdAt).toLocaleDateString()}</span>
+              <span>🕒 {new Date(order.createdAt).toLocaleTimeString()}</span>
+              <span className={`order-status status-${order.status.toLowerCase()}`}>
+                {order.status}
+              </span>
+            </div>
+          </div>
+          
           <ul className="order-items">
-            {order.items.map((it, i) => (
+            {order.items.map((item, i) => (
               <li key={i}>
                 <img
-  src={it.image ? `${API_BASE}${it.image}` : "/placeholder.png"}
-  alt={it.name}
-/>
-                <div>
-                  <span>{it.product?.name}</span>
-                  <span>Qty: {it.qty}</span>
-                  <span>₹{it.price * it.qty}</span>
+                  src={item.image ? 
+                    (item.image.startsWith('http') ? item.image : `${API_BASE}${item.image}`) 
+                    : '/placeholder.png'}
+                  alt={item.product?.name || 'Product image'}
+                  onError={(e) => {
+                    e.target.src = '/placeholder.png';
+                  }}
+                />
+                <div className="order-item-details">
+                  <span className="order-item-name">{item.product?.name || 'Product'}</span>
+                  <div className="order-item-meta">
+                    <span>Qty: {item.qty}</span>
+                    <span>₹{item.price} each</span>
+                  </div>
                 </div>
+                <span className="order-item-price">₹{(item.price * item.qty).toFixed(2)}</span>
               </li>
             ))}
           </ul>
+          
+          <div className="order-total">
+            Order Total: <span>₹{order.total.toFixed(2)}</span>
+          </div>
         </div>
       ))}
     </div>
