@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import http from "../api/http";
 import { useAuth } from "../state/AuthContext.jsx";
-import { useNavigate } from "react-router-dom";
+
+import "../styles/LoginPage.css";
+import "../styles/Error.css";
 
 export default function AdminLogin() {
   const { login } = useAuth();

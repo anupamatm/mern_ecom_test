@@ -1,6 +1,11 @@
+
 import React from "react";
 import { useAuth } from "../state/AuthContext.jsx";
 import { Link } from "react-router-dom";
+
+import "../styles/Home.css";
+import "../styles/Card.css";
+import "../styles/Pager.css";
 
 export default function AdminDashboard() {
   const { user } = useAuth();

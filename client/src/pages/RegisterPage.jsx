@@ -4,10 +4,11 @@ import http from "../api/http";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/Auth.css";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,20 +18,28 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const { data } = await http.post("/auth/login", { email, password });
+      const { data } = await http.post("/auth/register", { name, email, password });
       login(data); // save token + user
       navigate("/");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      setError(err.response?.data?.message || "Registration failed");
     }
   };
 
   return (
     <div className="auth-container">
       <form onSubmit={handleSubmit} className="auth-form">
-        <h2>Login</h2>
+        <h2>Create Account</h2>
 
         {error && <div className="auth-error">{error}</div>}
+
+        <input
+          type="text"
+          placeholder="Full Name"
+          value={name}
+          onChange={e => setName(e.target.value)}
+          required
+        />
 
         <input
           type="email"
@@ -48,10 +57,10 @@ export default function LoginPage() {
           required
         />
 
-        <button type="submit" className="btn">Login</button>
+        <button type="submit" className="btn">Register</button>
 
         <p className="auth-switch">
-          Don’t have an account? <Link to="/register">Register</Link>
+          Already have an account? <Link to="/login">Login</Link>
         </p>
       </form>
     </div>
