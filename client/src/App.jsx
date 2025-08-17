@@ -34,7 +34,7 @@ export default function App() {
           </button>
         <nav className="nav-main">
           <Link to="/" className="nav-link" onClick={closeNav}>Home</Link>
-         <Link to="/cart" className="nav-link" onClick={closeNav}>Cart ({cart.length})</Link>
+         <Link to="/cart" className="nav-link" onClick={closeNav}>Cart ({cart?.length || 0})</Link>
 
           {user ? (
             <div className="nav-user">
