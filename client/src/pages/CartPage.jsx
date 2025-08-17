@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../state/CartContext";
 import "../styles/CartPage.css";
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
+    const navigate = useNavigate(); 
 
   const total = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
@@ -51,7 +52,7 @@ export default function CartPage() {
           <div className="cart-summary">
             <h3>Total: ₹{total}</h3>
             <button className="btn-clear" onClick={clearCart}>Clear Cart</button>
-            <button className="btn-checkout">Checkout</button>
+            <button className="btn-checkout" onClick={() => navigate("/checkout")}>Checkout</button>
           </div>
         </>
       )}

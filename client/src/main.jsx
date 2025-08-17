@@ -15,6 +15,8 @@ import AdminLogin from "./pages/AdminLogin.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
 import AdminProducts from "./pages/AdminProducts.jsx"
 import ProductForm from "./components/ProductForm.jsx";
+import CheckoutPage from "./pages/CheckoutPage";
+import MyOrdersPage from "./pages/MyOrdersPage";
 
 import { AuthProvider, useAuth } from "./state/AuthContext.jsx";
 import { CartProvider } from "./state/CartContext.jsx";
@@ -33,8 +35,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route index element={<Home />} />
               <Route path="/products/:id" element={<ProductPage />} />
               <Route path="/cart" element={<CartPage />} />
-              {/* <Route path="/checkout" element={<Private><CheckoutPage/></Private>} /> */}
-              {/* <Route path="/orders" element={<Private><OrdersPage/></Private>} /> */}
+              <Route path="/checkout" element={<Private><CheckoutPage/></Private>} />
+              <Route path="/orders" element={<Private><MyOrdersPage/></Private>} />
+              
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
             </Route>

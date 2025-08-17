@@ -22,9 +22,9 @@ export default function ProductCard({ product }) {
           <p className="card-category">{product.category}</p>
         </div>
       </Link>
-      <div className="card-footer">
+      {/* <div className="card-footer">
         <button className="btn-add">Add to Cart</button>
-      </div>
+      </div> */}
     </div>
   );
 }
