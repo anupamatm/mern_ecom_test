@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import http from "../api/http";
+import { useNavigate , Link} from "react-router-dom";
+import { useAuth } from "../state/AuthContext.jsx";
+import { API_BASE } from "../api/http";
+import ProductCard from "../components/ProductCard.jsx";
 
 import "../styles/Home.css";
 import "../styles/Card.css";
@@ -93,13 +97,7 @@ export default function Home() {
       ) : (
         <div className="grid">
           {items.map((p) => (
-            <Link key={p._id} to={`/product/${p._id}`} className="card">
-              <img src={p.images?.[0] || "/placeholder.png"} alt={p.name} />
-              <div className="card-body">
-                <div className="name">{p.name}</div>
-                <div className="price">₹{p.price}</div>
-              </div>
-            </Link>
+           <ProductCard key={p._id} product={p} />
           ))}
         </div>
       )}
