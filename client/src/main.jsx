@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import App from "./App.jsx";
 import Home from "./pages/Home.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
-// import CartPage from "./pages/CartPage.jsx";
+import CartPage from "./pages/CartPage.jsx";
 import RegisterPage from "./pages/RegisterPage.jsx";
 // import CheckoutPage from "./pages/CheckoutPage.jsx";
 // import OrdersPage from "./pages/OrdersPage.jsx";
@@ -32,7 +32,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
             <Route element={<App />}>
               <Route index element={<Home />} />
               <Route path="/products/:id" element={<ProductPage />} />
-              {/* <Route path="/cart" element={<CartPage />} /> */}
+              <Route path="/cart" element={<CartPage />} />
               {/* <Route path="/checkout" element={<Private><CheckoutPage/></Private>} /> */}
               {/* <Route path="/orders" element={<Private><OrdersPage/></Private>} /> */}
               <Route path="/login" element={<LoginPage />} />

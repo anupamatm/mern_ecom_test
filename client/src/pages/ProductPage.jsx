@@ -1,12 +1,16 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import http, { API_BASE } from "../api/http";
 import { useCart } from "../state/CartContext";
+import { useAuth } from "../state/AuthContext";   // ✅ import auth
 import "../styles/ProductPage.css";
 
 export default function ProductPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { user } = useAuth(); // ✅ get logged-in user
+
   const [product, setProduct] = useState(null);
   const [mainImage, setMainImage] = useState("");
 
@@ -21,6 +25,18 @@ export default function ProductPage() {
   }, [id]);
 
   if (!product) return <div className="loading">Loading...</div>;
+
+  // ✅ Handle Add to Cart
+  const handleAddToCart = () => {
+     console.log("product",product);
+    if (!user) {
+      navigate("/login"); // redirect if not logged in
+      return;
+    }
+   
+    
+    addToCart(product); // add if logged in
+  };
 
   return (
     <div className="product-page">
@@ -54,7 +70,7 @@ export default function ProductPage() {
 
         <button
           className="btn-add"
-          onClick={() => addToCart(product)}
+          onClick={handleAddToCart}
           disabled={product.stock <= 0}
         >
           {product.stock > 0 ? "Add to Cart" : "Out of Stock"}

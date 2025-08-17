@@ -1,34 +1,71 @@
-import { createContext, useContext, useReducer, useEffect } from "react";
-const Ctx = createContext();
-const init = () => JSON.parse(localStorage.getItem("cart") || "[]");
+import { createContext, useContext, useReducer } from "react";
 
-//reducer function to handle cart actions
-const reducer = (state, action) => {
-  switch(action.type){
-    // action types: add, remove, qty, clear
-    case "add": {
-      const i = state.findIndex(x => x.product === action.item.product);
-      if (i >= 0) { const next = [...state]; next[i].qty += action.item.qty; return next; }
-      return [...state, action.item];
+const CartContext = createContext();
+
+const initialState = {
+  items: [], // { product, quantity }
+};
+
+function cartReducer(state, action) {
+  switch (action.type) {
+    case "ADD_TO_CART": {
+      const existing = state.items.find((i) => i.product._id === action.payload._id);
+      if (existing) {
+        return {
+          ...state,
+          items: state.items.map((i) =>
+            i.product._id === action.payload._id
+              ? { ...i, quantity: i.quantity + 1 }
+              : i
+          ),
+        };
+      }
+      return {
+        ...state,
+        items: [...state.items, { product: action.payload, quantity: 1 }],
+      };
     }
-    //remove an item from the cart
-    case "remove": return state.filter(x => x.product !== action.id);
-    //update the quantity of an item in the cart
-    case "qty": return state.map(x => x.product === action.id ? { ...x, qty: action.qty } : x);
-    //clear the cart
-    case "clear": return [];
-    //default case to return the current state
-    default: return state;
-  }
-};
-export const CartProvider = ({ children }) => {
-  //useReducer to manage cart state
-  const [cart, dispatch] = useReducer(reducer, [], init);
-  //useEffect to persist cart state in localStorage
-  useEffect(()=> localStorage.setItem("cart", JSON.stringify(cart)), [cart]);
-  //provide cart state and dispatch function to children components
-  return <Ctx.Provider value={{ cart, dispatch }}>{children}</Ctx.Provider>;
-};
 
-//
-export const useCart = () => useContext(Ctx);
+    case "REMOVE_FROM_CART":
+      return {
+        ...state,
+        items: state.items.filter((i) => i.product._id !== action.payload),
+      };
+
+    case "UPDATE_QUANTITY":
+      return {
+        ...state,
+        items: state.items.map((i) =>
+          i.product._id === action.payload.id
+            ? { ...i, quantity: action.payload.quantity }
+            : i
+        ),
+      };
+
+    case "CLEAR_CART":
+      return initialState;
+
+    default:
+      return state;
+  }
+}
+
+export function CartProvider({ children }) {
+  const [state, dispatch] = useReducer(cartReducer, initialState);
+
+  const addToCart = (product) => dispatch({ type: "ADD_TO_CART", payload: product });
+  const removeFromCart = (id) => dispatch({ type: "REMOVE_FROM_CART", payload: id });
+  const updateQuantity = (id, quantity) =>
+    dispatch({ type: "UPDATE_QUANTITY", payload: { id, quantity } });
+  const clearCart = () => dispatch({ type: "CLEAR_CART" });
+
+  return (
+    <CartContext.Provider
+      value={{ cart: state.items, addToCart, removeFromCart, updateQuantity, clearCart }}
+    >
+      {children}
+    </CartContext.Provider>
+  );
+}
+
+export const useCart = () => useContext(CartContext);
