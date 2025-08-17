@@ -11,15 +11,14 @@ export default function CheckoutPage() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
-    name: user?.name || "",
-    email: user?.email || "",
     address: "",
     city: "",
-    zip: "",
+    postalCode: "",
+    country: "India",
+    paymentMethod: "COD",
   });
 
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
 
   const total = cart.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
@@ -50,27 +49,30 @@ export default function CheckoutPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    await http.post("/orders", {
-      customer: form,
-      items: cart.map((i) => ({
-        product: i.product._id,
-        qty: Number(i.quantity) || 1,   // ✅ sending qty
-        price: Number(i.product.price),
-      })),
-      total: Number(total),
-    });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await http.post("/orders", {
+        items: cart.map((i) => ({
+          product: i.product._id,
+          qty: Number(i.quantity) || 1,
+        })),
+        shippingAddress: {
+          address: form.address,
+          city: form.city,
+          postalCode: form.postalCode,
+          country: form.country,
+        },
+        payment: { method: form.paymentMethod },
+      });
 
-    clearCart();
-    alert("✅ Order placed successfully!");
-    navigate("/orders");   // ✅ redirect to My Orders page
-  } catch (err) {
-    setError(err.response?.data?.message || "Checkout failed");
-  }
-};
-
+      clearCart();
+      alert("✅ Order placed successfully!");
+      navigate("/orders");
+    } catch (err) {
+      setError(err.response?.data?.message || "Checkout failed");
+    }
+  };
 
   return (
     <div className="checkout-page">
@@ -80,21 +82,6 @@ const handleSubmit = async (e) => {
         {/* Left: Form */}
         <form className="checkout-form" onSubmit={handleSubmit}>
           <h3>Shipping Information</h3>
-          <input
-            name="name"
-            placeholder="Full Name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
-          <input
-            name="email"
-            type="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
           <input
             name="address"
             placeholder="Address"
@@ -110,15 +97,32 @@ const handleSubmit = async (e) => {
             required
           />
           <input
-            name="zip"
-            placeholder="ZIP Code"
-            value={form.zip}
+            name="postalCode"
+            placeholder="Postal Code"
+            value={form.postalCode}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="country"
+            placeholder="Country"
+            value={form.country}
             onChange={handleChange}
             required
           />
 
+          <h3>Payment</h3>
+          <select
+            name="paymentMethod"
+            value={form.paymentMethod}
+            onChange={handleChange}
+          >
+            <option value="COD">Cash on Delivery</option>
+            <option value="card">Card</option>
+            <option value="upi">UPI</option>
+          </select>
+
           {error && <p className="error">{error}</p>}
-          {success && <p className="success">{success}</p>}
 
           <button type="submit" className="btn-checkout">
             Place Order

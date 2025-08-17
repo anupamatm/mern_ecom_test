@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import http, { API_BASE } from "../api/http";
+import { PRODUCT_CATEGORIES } from "../constants/categories";
 import "../styles/ProductForm.css";
 
 export default function ProductForm() {
@@ -134,12 +135,20 @@ export default function ProductForm() {
           onChange={handleChange}
           required
         />
-        <input
+        <select
           name="category"
-          placeholder="Category"
           value={form.category}
           onChange={handleChange}
-        />
+          className="form-select"
+          required
+        >
+          <option value="">Select a category</option>
+          {PRODUCT_CATEGORIES.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
         <input
           type="number"
           name="stock"

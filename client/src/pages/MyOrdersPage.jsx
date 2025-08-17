@@ -43,20 +43,15 @@ export default function MyOrdersPage() {
           <h3>Order #{order._id}</h3>
           <p><strong>Date:</strong> {new Date(order.createdAt).toLocaleString()}</p>
           <p><strong>Total:</strong> ₹{order.total}</p>
+          <p><strong>Status:</strong> {order.status}</p> {/* Added status */}
 
           <ul className="order-items">
             {order.items.map((it, i) => (
               <li key={i}>
                 <img
-                  src={
-                    it.product?.images?.length
-                      ? (it.product.images[0].startsWith("http")
-                        ? it.product.images[0]
-                        : `${API_BASE}${it.product.images[0]}`)
-                      : "/placeholder.png"
-                  }
-                  alt={it.product?.name}
-                />
+  src={it.image ? `${API_BASE}${it.image}` : "/placeholder.png"}
+  alt={it.name}
+/>
                 <div>
                   <span>{it.product?.name}</span>
                   <span>Qty: {it.qty}</span>

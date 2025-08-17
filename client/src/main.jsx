@@ -23,6 +23,7 @@ import { CartProvider } from "./state/CartContext.jsx";
 import "./index.css";
 
 import { Private, AdminOnly } from "./routesGuards.jsx";
+import AdminOrdersPage from "./pages/AdminOrdersPage.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -57,14 +58,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
               <Route path="products" element={<AdminProducts />} />
               <Route path="products/:id/edit" element={<ProductForm />} />
               <Route path="products/new" element={<ProductForm />} />
-              <Route
-                path="orders"
-                element={
-                  <div className="container">
-                    <h2>Admin Orders (TODO)</h2>
-                  </div>
-                }
-              />
+              <Route path="orders"  element={ <AdminOrdersPage/>} />
             </Route>
           </Routes>
         </BrowserRouter>

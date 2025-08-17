@@ -3,6 +3,7 @@ import http from "../api/http";
 import { useNavigate } from "react-router-dom";
 import "../styles/AdminProducts.css";
 import { API_BASE } from "../api/http";
+import { PRODUCT_CATEGORIES } from "../constants/categories";
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -62,15 +63,21 @@ export default function AdminProducts() {
             setQ(e.target.value);
           }}
         />
-        <input
-          type="text"
-          placeholder="Category..."
+        <select
           value={category}
           onChange={(e) => {
             setPage(1);
             setCategory(e.target.value);
           }}
-        />
+          className="category-filter"
+        >
+          <option value="">All Categories</option>
+          {PRODUCT_CATEGORIES.map((cat) => (
+            <option key={cat} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
         <select value={sort} onChange={(e) => setSort(e.target.value)}>
           <option value="createdAt:desc">Newest</option>
           <option value="createdAt:asc">Oldest</option>

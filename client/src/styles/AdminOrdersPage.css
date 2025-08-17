@@ -1,0 +1,105 @@
+.admin-orders {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.admin-orders h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+.order-card {
+  background: #fff;
+  border: 1px solid #e2e2e2;
+  border-radius: 12px;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.order-card h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: #444;
+  word-break: break-word;
+}
+
+.order-card p {
+  margin: 0.25rem 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.order-card select {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-left: 0.5rem;
+  background: #f9f9f9;
+}
+
+.order-card ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.8rem;
+}
+
+.order-card li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.order-card li img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+/* Status colors */
+.order-card select option[value="pending"] {
+  color: #d97706; /* amber */
+}
+.order-card select option[value="paid"] {
+  color: #2563eb; /* blue */
+}
+.order-card select option[value="shipped"] {
+  color: #9333ea; /* purple */
+}
+.order-card select option[value="delivered"] {
+  color: #16a34a; /* green */
+}
+.order-card select option[value="cancelled"] {
+  color: #dc2626; /* red */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .order-card {
+    padding: 1rem;
+  }
+
+  .order-card li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .order-card li img {
+    margin-bottom: 0.4rem;
+  }
+}
