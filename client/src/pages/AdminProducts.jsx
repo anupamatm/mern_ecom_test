@@ -111,7 +111,7 @@ export default function AdminProducts() {
 <td>
   {p.images?.length > 0 ? (
     <img
-      src={`${API_BASE}${p.images[0]}`}   // ✅ full URL
+      src={`${API_BASE}/${p.images[0]}`}   // ✅ full URL
       alt={p.name}
       className="thumb"
     />
