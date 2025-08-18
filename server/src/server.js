@@ -53,5 +53,13 @@ app.get("/api/health", (req, res) => res.json({ ok: true }));
 app.use(notFound);
 app.use(errorHandler);
 
-// ✅ Export express app for Vercel
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+  });
+}
+
+// Export the Express API
 export default app;
