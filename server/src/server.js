@@ -21,7 +21,17 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const server = http.createServer(app);
-const io = new IOServer(server, { cors: { origin: "*" } });
+const io = new IOServer(server, { 
+  cors: { 
+    origin: [
+      'http://localhost:3000',
+      'https://mern-ecom-test-tp89.vercel.app',
+      'https://mern-ecom-test.vercel.app'
+    ],
+    methods: ["GET", "POST"],
+    credentials: true
+  } 
+});
 
 // make io available in routes
 app.set("io", io);
@@ -32,7 +42,28 @@ io.on("connection", socket => {
 
 connectDB();
 
-app.use(cors());
+// CORS configuration
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://mern-ecom-test-tp89.vercel.app',
+  'https://mern-ecom-test.vercel.app'
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));
