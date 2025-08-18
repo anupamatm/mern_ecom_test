@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import http, { API_BASE } from "../api/http";
 import "../styles/AdminOrdersPage.css";
 import "../styles/AdminOrdersFilter.css";
+import { getImageUrl } from "../utils/images";
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -91,12 +92,12 @@ export default function AdminOrdersPage() {
   return (
     <div className="admin-orders">
       <h2>All Orders</h2>
-      
+
       {/* Filters Section */}
       <div className="admin-orders-filters">
         <div className="filter-group">
           <label>Status:</label>
-          <select 
+          <select
             name="status"
             value={filters.status}
             onChange={handleFilterChange}
@@ -155,7 +156,7 @@ export default function AdminOrdersPage() {
           <div className="order-meta">
             <p>Order Date: {formatDate(order.createdAt)}</p>
             <p className="order-status">
-              Status: 
+              Status:
               <select
                 value={order.status}
                 onChange={(e) => updateStatus(order._id, e.target.value)}
@@ -173,23 +174,10 @@ export default function AdminOrdersPage() {
             {order.items.map((it, i) => (
               <li key={i}>
                 <img
-                  src={
-                    it.product?.images?.[0]
-                      ? it.product.images[0].startsWith("http")
-                        ? it.product.images[0]
-                        : it.product.images[0].startsWith("/uploads/")
-                          ? `${API_BASE}${it.product.images[0]}`
-                          : `${API_BASE}/uploads/${it.product.images[0]}`
-                      : it.image
-                        ? it.image.startsWith("http")
-                          ? it.image
-                          : it.image.startsWith("/uploads/")
-                            ? `${API_BASE}${it.image}`
-                            : `${API_BASE}/uploads/${it.image}`
-                        : "/placeholder.png"
-                  }
+                  src={getImageUrl(it.product?.images?.[0] || it.image)}
                   alt={it.product?.name || it.name || "Product"}
                 />
+
                 {(it.product?.name || it.name || "")} × {it.qty} = ₹{it.price * it.qty}
               </li>
             ))}

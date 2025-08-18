@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/AdminProducts.css";
 import { API_BASE } from "../api/http";
 import { PRODUCT_CATEGORIES } from "../constants/categories";
+import { getImageUrl } from "../utils/images"; 
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -108,17 +109,19 @@ export default function AdminProducts() {
                 <tr key={p._id}>
                   
 
-<td>
-  {p.images?.length > 0 ? (
-    <img
-      src={`${API_BASE}/${p.images[0]}`}   // ✅ full URL
-      alt={p.name}
-      className="thumb"
-    />
-  ) : (
-    <span className="no-img">–</span>
-  )}
-</td>
+                  <td>
+                    {p.images?.length > 0 ? (
+                      <img
+                        src={getImageUrl(p.images[0])}  // ✅ use helper
+                        alt={p.name}
+                        className="thumb"
+                        onError={(e) => { e.target.src = "/placeholder.png"; }}
+                      />
+                    ) : (
+                      <span className="no-img">–</span>
+                    )}
+                  </td>
+
 
                   <td>{p.name}</td>
                   <td>{p.price}</td>

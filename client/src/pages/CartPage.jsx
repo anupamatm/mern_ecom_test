@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../state/CartContext";
 import { API_BASE } from "../api/http";
 import "../styles/CartPage.css";
+import { getImageUrl } from "../utils/images";
 
 export default function CartPage() {
   const { cart = [], removeFromCart, updateQuantity, clearCart } = useCart();
@@ -35,16 +36,18 @@ export default function CartPage() {
                     <tr key={`desktop-${item.product._id}`}>
                       <td className="product-cell">
                         <div className="product-info">
-                          <img 
-                            src={item.product.images && item.product.images.length > 0 ? 
-                              (item.product.images[0].startsWith('http') ? item.product.images[0] : `${API_BASE}${item.product.images[0]}`) 
-                              : '/placeholder.png'}
-                            alt={item.product.name}
-                            className="product-image"
-                            onError={(e) => {
-                              e.target.src = '/placeholder.png';
-                            }}
-                          />
+                        <img
+  src={
+    getImageUrl(item.product.images?.[0] || item.product.image)
+      
+  }
+  alt={item.product.name}
+  className="product-image"
+  onError={(e) => {
+    e.target.src = "/placeholder.png";
+  }}
+/>
+
                           <span>{item.product.name}</span>
                         </div>
                       </td>

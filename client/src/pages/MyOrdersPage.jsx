@@ -3,6 +3,7 @@ import { useAuth } from "../state/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import http, { API_BASE } from "../api/http";
 import "../styles/MyOrdersPage.css";
+import { getImageUrl } from "../utils/images";
 
 export default function MyOrdersPage() {
   const { user } = useAuth();
@@ -55,14 +56,17 @@ export default function MyOrdersPage() {
             {order.items.map((item, i) => (
               <li key={i}>
                 <img
-                  src={item.image ? 
-                    (item.image.startsWith('http') ? item.image : `${API_BASE}${item.image}`) 
-                    : '/placeholder.png'}
-                  alt={item.product?.name || 'Product image'}
-                  onError={(e) => {
-                    e.target.src = '/placeholder.png';
-                  }}
-                />
+  src={
+    getImageUrl(item.image)
+      ? item.image // ✅ Cloudinary already gives full https URL
+      : "/placeholder.png"
+  }
+  alt={item.product?.name || "Product image"}
+  onError={(e) => {
+    e.target.src = "/placeholder.png";
+  }}
+/>
+
                 <div className="order-item-details">
                   <span className="order-item-name">{item.product?.name || 'Product'}</span>
                   <div className="order-item-meta">

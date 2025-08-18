@@ -24,15 +24,14 @@ export default function ProductForm() {
   useEffect(() => {
     if (isEdit) {
       http.get(`/products/${id}`)
-        .then(({ data }) => {
-          setForm({
-            ...data,
-            images: (data.images || []).map((url) =>
-              url.startsWith("http") ? url : `${API_BASE}${url}`
-            ),
-          });
-        })
-        .catch(() => setError("Failed to load product"));
+  .then(({ data }) => {
+    setForm({
+      ...data,
+      images: data.images || [], // already full Cloudinary URLs
+    });
+  })
+  .catch(() => setError("Failed to load product"));
+
     }
   }, [isEdit, id]);
 
@@ -48,8 +47,12 @@ export default function ProductForm() {
     const localPreviews = files.map((f) => URL.createObjectURL(f));
     setForm((prev) => ({
       ...prev,
-      images: [...prev.images, ...localPreviews],
+      images: [
+        ...prev.images.filter((img) => !img.startsWith("blob:")),
+        ...data.urls, // already Cloudinary URLs
+      ],
     }));
+    
 
     // Step 2: Upload to server
     const formData = new FormData();
@@ -90,11 +93,9 @@ export default function ProductForm() {
     try {
       const payload = {
         ...form,
-        // ensure backend always gets relative paths if needed
-        images: form.images.map((url) =>
-          url.replace(API_BASE, "")
-        ),
+        images: form.images, // send as-is (full URLs)
       };
+      
 
       if (isEdit) {
         await http.put(`/products/${id}`, payload);
