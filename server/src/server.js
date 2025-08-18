@@ -20,19 +20,33 @@ const __dirname = path.dirname(__filename);
 const app = express();
 connectDB();
 
-// CORS
+// CORS configuration
 const allowedOrigins = [
   "http://localhost:3000",
   "https://mern-ecom-test-tp89.vercel.app",
-  "https://mern-ecom-test.vercel.app"
+  "https://mern-ecom-test.vercel.app",
+  "https://mern-ecom-test-git-main-anupamatm.vercel.app"
 ];
 
+// Enable CORS for all routes
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  exposedHeaders: ["Content-Length", "X-Foo", "X-Bar"]
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 
 app.use(express.json());
 app.use(cookieParser());
