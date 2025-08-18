@@ -4,6 +4,33 @@
   padding: 0 1rem;
 }
 
+/* Product images in orders list */
+.order-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+}
+
+.order-card li {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.order-card li:last-child {
+  border-bottom: none;
+}
+
+.order-card li img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 1rem;
+  border: 1px solid #eee;
+}
+
 .admin-orders h2 {
   font-size: 1.8rem;
   margin-bottom: 1.5rem;
