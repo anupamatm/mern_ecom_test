@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE = "http://localhost:5000";  // 👈 add this
+export const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
 
 const http = axios.create({
   baseURL: `${API_BASE}/api`,  // all API requests go through here
