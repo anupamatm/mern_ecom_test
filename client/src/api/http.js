@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_BASE =  "https://mern-ecom-test.onrender.com";
+export const API_BASE = import.meta.env.VITE_API_BASE ||  "https://mern-ecom-test.onrender.com";
 
 const http = axios.create({
   baseURL: `${API_BASE}/api`,  // all API requests go through here
