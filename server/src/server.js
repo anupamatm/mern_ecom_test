@@ -18,35 +18,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+
+// DB connect
 connectDB();
 
-// CORS configuration
+// ✅ CORS
 const allowedOrigins = [
   "http://localhost:3000",
   "https://mern-ecom-test-tp89.vercel.app",
-  "https://mern-ecom-test.vercel.app",
-  "https://mern-ecom-test-git-main-anupamatm.vercel.app"
+  "https://mern-ecom-test.vercel.app"
 ];
-
-// Enable CORS for all routes
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: allowedOrigins,
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-  exposedHeaders: ["Content-Length", "X-Foo", "X-Bar"]
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
-
-// Handle preflight requests
-app.options('*', cors());
 
 app.use(express.json());
 app.use(cookieParser());
@@ -59,7 +46,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/uploads", uploadRoutes);
 
-// static files
+// Static files (⚠️ won't persist on Vercel, but okay for now)
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
@@ -67,13 +54,5 @@ app.get("/api/health", (req, res) => res.json({ ok: true }));
 app.use(notFound);
 app.use(errorHandler);
 
-// For local development
-if (process.env.NODE_ENV !== 'production') {
-  const PORT = process.env.PORT || 5000;
-  app.listen(PORT, () => {
-    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-  });
-}
-
-// Export the Express API
+// ✅ IMPORTANT: export the app for Vercel
 export default app;
