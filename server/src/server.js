@@ -55,11 +55,11 @@ app.get("/api/health", (req, res) => res.json({ ok: true }));
 app.use(notFound);
 app.use(errorHandler);
 
-if (process.env.VERCEL !== "1") {
+// if (process.env.VERCEL !== "1") {
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
-}
+//}
 
 // ✅ IMPORTANT: export the app for Vercel
 export default app;
