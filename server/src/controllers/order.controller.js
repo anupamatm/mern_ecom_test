@@ -6,9 +6,9 @@ import Product from "../models/Product.js";
 //
 
 
+// In server/src/controllers/order.controller.js
 export const createOrder = async (req, res) => {
   const { items, shippingAddress, payment } = req.body;
-  console.log("Creating order with items:", items, shippingAddress, payment);
   if (!items?.length) return res.status(400).json({ message: "Empty order" });
 
   // Fetch product details
@@ -27,16 +27,22 @@ export const createOrder = async (req, res) => {
 
     total += product.price * it.qty;
 
-    // 🔑 Store snapshot (so if product changes later, order still has name & image)
+    // Ensure we store the full Cloudinary URL
+    const productImage = product.images?.[0] || "";
+    const fullImageUrl = productImage.startsWith('http') ? 
+      productImage : 
+      `${process.env.API_BASE || ''}${productImage}`;
+
     orderItems.push({
       product: product._id,
       name: product.name,
-      image: product.images?.[0] || "",
+      image: fullImageUrl,  // Store full URL
       qty: it.qty,
       price: product.price
     });
   }
 
+  // Rest of the function remains the same...
   // Decrement stock
   await Promise.all(
     items.map(it =>

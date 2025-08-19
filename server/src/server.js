@@ -27,6 +27,7 @@ connectDB();
 const allowedOrigins = [
   "http://localhost:3000",
   "https://mern-ecom-test-tp89.vercel.app",
+  "https://mern-ecom-test-tp89.vercel.app",
   "https://mern-ecom-test.vercel.app", 
   "https://mern-ecom-test.onrender.com",   // backend itself
   "https://mern-ecom-test-1.onrender.com" 
