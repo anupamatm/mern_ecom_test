@@ -34,11 +34,10 @@ if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !pr
 // ✅ CORS
 const allowedOrigins = [
   "http://localhost:3000",
+  "https://mern-ecom-test-1.onrender.com",
   "https://mern-ecom-test-8ajh.vercel.app",
   "https://mern-ecom-test.vercel.app", 
   "https://mern-ecom-test.onrender.com",   // backend itself
-  "https://mern-ecom-test-1.onrender.com" 
-
 ];
 app.use(cors({
   origin: function (origin, callback) {
