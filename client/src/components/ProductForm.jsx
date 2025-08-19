@@ -42,29 +42,28 @@ export default function ProductForm() {
   const handleFileUpload = async (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
-
+  
     // Step 1: Show blob previews immediately
     const localPreviews = files.map((f) => URL.createObjectURL(f));
     setForm((prev) => ({
       ...prev,
       images: [
         ...prev.images.filter((img) => !img.startsWith("blob:")),
-        ...data.urls, // already Cloudinary URLs
+        ...localPreviews,  // ✅ use blob previews, not data.urls
       ],
     }));
-    
-
+  
     // Step 2: Upload to server
     const formData = new FormData();
     files.forEach((f) => formData.append("images", f));
-
+  
     try {
       setUploading(true);
       const { data } = await http.post("/uploads", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-
-      // Step 3: Replace blob previews with actual URLs
+  
+      // Step 3: Replace blob previews with actual URLs from server
       setForm((prev) => ({
         ...prev,
         images: [
@@ -80,6 +79,7 @@ export default function ProductForm() {
       setUploading(false);
     }
   };
+  
 
   const handleRemoveImage = (index) => {
     setForm((prev) => ({
