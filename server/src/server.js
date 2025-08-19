@@ -27,12 +27,21 @@ connectDB();
 const allowedOrigins = [
   "http://localhost:3000",
   "https://mern-ecom-test-tp89.vercel.app",
-  "https://mern-ecom-test.vercel.app"
+  "https://mern-ecom-test.vercel.app", 
+  "https://mern-ecom-test.onrender.com",   // backend itself
+  "https://mern-ecom-test-1.onrender.com" 
+
 ];
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
