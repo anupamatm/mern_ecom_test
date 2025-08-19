@@ -24,15 +24,23 @@ export default function ProductForm() {
   useEffect(() => {
     if (isEdit) {
       http.get(`/products/${id}`)
-  .then(({ data }) => {
-    setForm({
-      ...data,
-      images: data.images || [], // already full Cloudinary URLs
-    });
-  })
-  .catch(() => setError("Failed to load product"));
-
+        .then(({ data }) => {
+          setForm({
+            ...data,
+            images: data.images || [], // already full Cloudinary URLs
+          });
+        })
+        .catch(() => setError("Failed to load product"));
     }
+
+    // Cleanup function to revoke any blob URLs when component unmounts
+    return () => {
+      form.images.forEach(image => {
+        if (image && image.startsWith('blob:')) {
+          URL.revokeObjectURL(image);
+        }
+      });
+    };
   }, [isEdit, id]);
 
   const handleChange = (e) => {
@@ -43,38 +51,30 @@ export default function ProductForm() {
     const files = Array.from(e.target.files);
     if (!files.length) return;
   
-    // Step 1: Show blob previews immediately
-    const localPreviews = files.map((f) => URL.createObjectURL(f));
-    setForm((prev) => ({
-      ...prev,
-      images: [
-        ...prev.images.filter((img) => !img.startsWith("blob:")),
-        ...localPreviews,  // ✅ use blob previews, not data.urls
-      ],
-    }));
-  
-    // Step 2: Upload to server
-    const formData = new FormData();
-    files.forEach((f) => formData.append("images", f));
-  
     try {
       setUploading(true);
+      
+      // Upload to server first
+      const formData = new FormData();
+      files.forEach((f) => formData.append("images", f));
+      
       const { data } = await http.post("/uploads", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
   
-      // Step 3: Replace blob previews with actual URLs from server
+      // Only update form with server URLs (no blob URLs)
+      const uploadedUrls = data.urls.map((url) => 
+        url.startsWith("http") ? url : `${API_BASE}${url}`
+      );
+      
       setForm((prev) => ({
         ...prev,
-        images: [
-          ...prev.images.filter((img) => !img.startsWith("blob:")),
-          ...data.urls.map((url) =>
-            url.startsWith("http") ? url : `${API_BASE}${url}`
-          ),
-        ],
+        images: [...prev.images, ...uploadedUrls],
       }));
+      
     } catch (err) {
-      setError("Upload failed");
+      console.error("Upload failed:", err);
+      setError("Failed to upload images. Please try again.");
     } finally {
       setUploading(false);
     }
@@ -82,6 +82,12 @@ export default function ProductForm() {
   
 
   const handleRemoveImage = (index) => {
+    // Revoke the blob URL if it's a blob URL to prevent memory leaks
+    const imageToRemove = form.images[index];
+    if (imageToRemove && imageToRemove.startsWith('blob:')) {
+      URL.revokeObjectURL(imageToRemove);
+    }
+    
     setForm((prev) => ({
       ...prev,
       images: prev.images.filter((_, i) => i !== index),
