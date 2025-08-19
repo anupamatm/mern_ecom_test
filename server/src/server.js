@@ -23,11 +23,18 @@ const app = express();
 // DB connect
 connectDB();
 
+// Verify Cloudinary configuration
+if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+  console.warn('⚠️ Cloudinary environment variables are not fully configured');
+} else {
+  console.log('✅ Cloudinary is properly configured');
+  console.log(`📁 Cloudinary Folder: mern-ecom`);
+}
+
 // ✅ CORS
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://mern-ecom-test-tp89.vercel.app",
-  "https://mern-ecom-test-tp89.vercel.app",
+  "https://mern-ecom-test-8ajh.vercel.app",
   "https://mern-ecom-test.vercel.app", 
   "https://mern-ecom-test.onrender.com",   // backend itself
   "https://mern-ecom-test-1.onrender.com" 
